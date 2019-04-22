@@ -35,8 +35,10 @@
                     <tr>
                         <th>STT</th>
                         <th>Tên</th>
-                        <th>Slug</th>
-                        <th>Created</th>
+                        <th>Category</th>
+                        <th>Thunbar</th>
+                        <th>Slug</th>                        
+                        <th>Thông tin sản phẩm</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -47,8 +49,18 @@
                             <tr>
                                 <td><?=$stt?></td>
                                 <td><?=$item['name']?></td>
+                                <td><?=$item['category_id']?></td>
+                                <td style="text-align:center">
+                                  <img src="<?php echo uploads( ) ?>product/<?=$item['thunbar']?>" alt="" width="80px" height="80px"/>
+                                </td>
                                 <td><?=$item['slug']?></td>
-                                <td><?=$item['created_at']?></td>
+                                
+                                <td>
+                                  <ul>
+                                    <li>Giá: <?=number_format($item['price'])?> <sup>vnđ</sup></li>
+                                    <li>Số lượng: <?=$item['number']?></li>
+                                  </ul>
+                                </td>
                                 <td>
                                     <a href="edit.php?id=<?=$item['id']?>" class="btn btn-xs btn-success"><i class="fa fa-edit"> Sửa</i></a>
                                     <a href="delete.php?id=<?=$item['id']?>" class="btn btn-xs btn-danger"><i class="fa fa-times"> Xóa</i></a>

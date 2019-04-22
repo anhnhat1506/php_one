@@ -9,15 +9,34 @@
         $data = [
             "name"=>postInput('name'),
             "slug"=>to_slug(postInput('name')),
+            "category_id"=>postInput('category_id'),
+            "price"=>postInput('price'),
+            "number"=>postInput('number'),
+            "content"=>postInput('content'),
         ];              
         $error = [];
         if (postInput('name') == '') {
             $error['name'] = "Bạn vui lòng nhập tên sản phẩm";
         }
+        if (postInput('category_id') == '') {
+            $error['category_id'] = "Bạn vui lòng chọn tên danh mục";
+        }
+        if (postInput('price') == '') {
+            $error['price'] = "Bạn vui lòng nhập vào giá sản phẩm";
+        }
+        if (postInput('number') == '') {
+            $error['number'] = "Bạn vui lòng nhập vào số lượng sản phẩm này";
+        }
+        if (postInput('content') == '') {
+            $error['content'] = "Bạn vui lòng nhập thông tin sản phẩm";
+        }
+        if (! isset($_FILES['thunbar'])) {
+            $error['thunbar'] = "Bạn chọn hình sản phẩm ";
+        }
         //erros trống có nghĩa là không có lỗi
         if (empty($error)) {
-            $isset = $db->fetchOne("category"," name = '".$data['name']."' ");
-            if(count($isset)>0){
+            /*$isset = $db->fetchOne("category"," name = '".$data['name']."' ");
+            if(count($isset) > 0){
                 $_SESSION['error'] = "Tên danh mục đã tồn tại! Bạn vui lòng nhập tên danh mục khác!";
             }
             else {
@@ -30,7 +49,27 @@
                 //lỗi thêm thất bại
                     $_SESSION['success'] = "Thêm mới thất bại";
                 }
-            }           
+            }*/
+            if (isset($_FILES['thunbar'])) {
+               $file_name = $_FILES['thunbar']['name'];
+               $file_tmp = $_FILES['thunbar']['tmp_name']; 
+               $file_type = $_FILES['thunbar']['type'];
+               $file_erro = $_FILES['thunbar']['error'];
+                if ($file_erro == 0) {
+                    $part = ROOT ."product/";
+                    $data['thunbar'] = $file_name;
+                }
+            }
+            $id_insert = $db->insert("product",$data);
+            if ($id_insert) {
+                move_uploaded_file($file_tmp,$part.$file_name);
+                $_SESSION['success'] = "Thêm mới sản phẩm thành công";
+                redirectAdmin("product");
+            }
+            else {
+                $_SESSION['error'] = "Thêm sản phẩm thất bại";
+                
+            } 
         }
     }
 ?>
@@ -60,7 +99,7 @@
     </div>
     <!-- /.row -->
     <div class="col-md-12">
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         <div class="form-group row">
             <label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Danh mục sản phẩm</strong></label>
             <div class="col-sm-10">
@@ -70,8 +109,8 @@
                         <option value="<?=$item['id']?>"><?=$item['name']?></option>
                     <?php endforeach ?>
                 </select>
-                <?php if (isset($error['category'])): ?>
-                    <p class="text-danger"><?php echo $error['category'] ?> </p>
+                <?php if (isset($error['category_id'])): ?>
+                    <p class="text-danger"><?php echo $error['category_id'] ?> </p>
                 <?php endif ?>               
             </div>
         </div>
@@ -90,6 +129,15 @@
                 <input type="number" class="form-control" id="inputEmail3" placeholder="9.000.000" name="price">
                 <?php if (isset($error['price'])): ?>
                     <p class="text-danger"><?php echo $error['price'] ?> </p>
+                <?php endif ?>               
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Số lượng</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="inputEmail3" placeholder="1" name="number">
+                <?php if (isset($error['number'])): ?>
+                    <p class="text-danger"><?php echo $error['number'] ?> </p>
                 <?php endif ?>               
             </div>
         </div>
