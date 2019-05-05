@@ -1,8 +1,20 @@
 <?php 
     $open = "product";
     require_once __DIR__."/../../autoload/autoload.php";
-    $product = $db->fetchAll("product");
+    if (isset($_GET['page'])) {
+      $p = $_GET['page'];
+    } else {
+      $p = 1;
+    }
+    $sql = "select product.*, category.name as namecate from product left join category on category.id = product.category_id";
+    //$product = $db->fetchAll("product");
+    $product = $db->fetchJone('product',$sql,$p,3,true);
     //var_dump($category);
+    //_debug($product);
+    if(isset($product['page'])) {
+      $sotrang = $product['page'];
+      unset($product['page']);
+    }
 ?>
 <?php require_once __DIR__."/../../layouts/header.php" ?>
     <!-- Page Heading Nội dung chính của trang -->
@@ -49,7 +61,7 @@
                             <tr>
                                 <td><?=$stt?></td>
                                 <td><?=$item['name']?></td>
-                                <td><?=$item['category_id']?></td>
+                                <td><?=$item['namecate']?></td>
                                 <td style="text-align:center">
                                   <img src="<?php echo uploads( ) ?>product/<?=$item['thunbar']?>" alt="" width="80px" height="80px"/>
                                 </td>
@@ -71,6 +83,34 @@
                     
                 </tbody>
             </table>
+            <div class="pull-right">
+                <nav aria-label="Page navigation example pull-right" class="clearfix">
+                <ul class="pagination">
+                    <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    </li>
+                    <?php 
+                    for ($i=1; $i <=$sotrang ; $i++ ) : ?>
+                        <?php 
+                            if (isset($_GET['page'])) {
+                            $p = $_GET['page'];
+                            }
+                            else {
+                            $p = 1;
+                            }
+                        ?>
+                        <li class="page-item <?php echo ($i == $p) ? 'active' : '' ?>"><a class="page-link" href="?page=<?=$i?>"><?=$i?></a></li>
+                    <?php endfor ?>
+                    <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    </li>
+                </ul>
+                </nav>
+            </div>
             <!--<div class="pull-right">
               <nav aria-label="Page navigation example pull-right">
                 <ul class="pagination">
@@ -79,6 +119,7 @@
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
+            
                   <li class="page-item"><a class="page-link" href="#">1</a></li>
                   <li class="page-item"><a class="page-link" href="#">2</a></li>
                   <li class="page-item"><a class="page-link" href="#">3</a></li>

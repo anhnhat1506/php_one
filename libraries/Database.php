@@ -191,6 +191,7 @@ class Database
 
         if ($pagi == true )
         {
+            $total = $this->countTable($table);
             $sotrang = ceil($total / $row);
             $start = ($page - 1 ) * $row ;
             $sql .= " LIMIT $start,$row ";
