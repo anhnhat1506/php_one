@@ -67,15 +67,15 @@
                     $data['thunbar'] = $file_name;
                 }
             }
-            $id_insert = $db->insert("product",$data);
-            if ($id_insert) {
+            $update = $db->update("product",$data,array("id"=>$id));
+            if ($update >0) {
                 move_uploaded_file($file_tmp,$part.$file_name);
-                $_SESSION['success'] = "Thêm mới sản phẩm thành công";
+                $_SESSION['success'] = "Cập nhật sản phẩm thành công";
                 redirectAdmin("product");
             }
             else {
-                $_SESSION['error'] = "Thêm sản phẩm thất bại";
-                
+                $_SESSION['error'] = "Cập nhật sản phẩm thất bại";
+                redirectAdmin("product");
             } 
         }
     }
@@ -165,7 +165,8 @@
                     $protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
                     $port=$_SERVER['SERVER_PORT'];
                     $domain=$_SERVER['SERVER_NAME'];
-                    $c= ROOT ."product/";
+                    //$c= ROOT ."product/";
+                    //var_dump($c);
                     $img1 = "${protocol}://${domain}:${port}/project_php/public/uploads/product/";
                     //var_dump($img1);
                     $img = $img1.$Editproduct['thunbar'];
