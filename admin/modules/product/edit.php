@@ -37,9 +37,7 @@
         if (postInput('content') == '') {
             $error['content'] = "Bạn vui lòng nhập thông tin sản phẩm";
         }
-        if (! isset($_FILES['thunbar'])) {
-            $error['thunbar'] = "Bạn chọn hình sản phẩm ";
-        }
+        
         //erros trống có nghĩa là không có lỗi
         if (empty($error)) {
             /*$isset = $db->fetchOne("category"," name = '".$data['name']."' ");
@@ -162,16 +160,16 @@
 
 
                 <?php
-                    $protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
-                    $port=$_SERVER['SERVER_PORT'];
-                    $domain=$_SERVER['SERVER_NAME'];
+                    //$protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
+                    //$port=$_SERVER['SERVER_PORT'];
+                    //$domain=$_SERVER['SERVER_NAME'];
                     //$c= ROOT ."product/";
                     //var_dump($c);
-                    $img1 = "${protocol}://${domain}:${port}/project_php/public/uploads/product/";
+                    //$img1 = "${protocol}://${domain}:${port}/project_php/public/uploads/product/";
                     //var_dump($img1);
-                    $img = $img1.$Editproduct['thunbar'];
+                    //$img = $img1.$Editproduct['thunbar'];
                 ?>
-                <img src="<?=$img?>" width="50px" height="50px" />        
+                <img src="<?=uploads()?>product/<?=$Editproduct['thunbar']?>" width="50px" height="50px" />        
             </div>
         </div>
         <div class="form-group row">

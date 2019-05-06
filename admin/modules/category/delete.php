@@ -9,13 +9,20 @@
         $_SESSION['error'] = "Dữ liệu cần sửa của bạn không tồn tại";
         redirectAdmin("category");
     }
-    $num = $db->delete("category",$id);
-    if ($num>0) {
-        $_SESSION['success'] = "Xóa thành công";
-        redirectAdmin("category");
+    $is_product = $db->fetchOne("product"," category_id = $id ");
+    if ($is_product == NULL) {
+        $num = $db->delete("category",$id);
+        if ($num>0) {
+            $_SESSION['success'] = "Xóa thành công";
+            redirectAdmin("category");
+        }
+        else {
+            $_SESSION['error'] = "Xóa thất bại";
+            redirectAdmin("category");
+        }
     }
     else {
-        $_SESSION['error'] = "Xóa thất bại";
+        $_SESSION['error'] = "Danh mục đã có sản phẩm rồi! Bạn không thể xóa được";
         redirectAdmin("category");
     }
 ?>
