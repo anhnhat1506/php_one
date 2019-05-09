@@ -121,6 +121,9 @@
                         <li class="<?php isset($open) && $open =='product' ? 'active' : '' ?>">
                             <a href="<?php echo modules("product") ?>"><i class="fa fa-database"></i> Sản phẩm</a>
                         </li>                   
+                        <li class="<?php isset($open) && $open =='admin' ? 'active' : '' ?>">
+                            <a href="<?php echo modules("admin") ?>"><i class="fa fa-database"></i> Admin</a>
+                        </li>                   
                         <li class="list-group-item">
                             <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
                         </li>
