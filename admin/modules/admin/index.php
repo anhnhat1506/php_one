@@ -6,14 +6,14 @@
     } else {
       $p = 1;
     }
-    $sql = "select product.*, category.name as namecate from product left join category on category.id = product.category_id";
+    $sql = "select admin.* from admin order by ID desc";
     //$product = $db->fetchAll("product");
-    $product = $db->fetchJone('product',$sql,$p,3,true);
+    $admin = $db->fetchJone('admin',$sql,$p,3,true);
     //var_dump($category);
     //_debug($product);
-    if(isset($product['page'])) {
-      $sotrang = $product['page'];
-      unset($product['page']);
+    if(isset($admin['page'])) {
+      $sotrang = $admin['page'];
+      unset($admin['page']);
     }
 ?>
 <?php require_once __DIR__."/../../layouts/header.php" ?>
@@ -47,32 +47,21 @@
                     <tr>
                         <th>STT</th>
                         <th>Tên</th>
-                        <th>Category</th>
-                        <th>Thunbar</th>
-                        <th>Slug</th>                        
-                        <th>Thông tin sản phẩm</th>
+                        <th>Email</th>
+                        <th>SĐT</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php 
                         $stt=1;
-                        foreach ($product as $item) : ?>
+                        foreach ($admin as $item) : ?>
                             <tr>
                                 <td><?=$stt?></td>
                                 <td><?=$item['name']?></td>
-                                <td><?=$item['namecate']?></td>
-                                <td style="text-align:center">
-                                  <img src="<?php echo uploads( ) ?>product/<?=$item['thunbar']?>" alt="" width="80px" height="80px"/>
-                                </td>
-                                <td><?=$item['slug']?></td>
-                                
-                                <td>
-                                  <ul>
-                                    <li>Giá: <?=number_format($item['price'])?> <sup>vnđ</sup></li>
-                                    <li>Số lượng: <?=$item['number']?></li>
-                                  </ul>
-                                </td>
+                                <td><?=$item['email']?></td>
+                                <td><?=$item['phone']?></td>
+
                                 <td>
                                     <a href="edit.php?id=<?=$item['id']?>" class="btn btn-xs btn-success"><i class="fa fa-edit"> Sửa</i></a>
                                     <a href="delete.php?id=<?=$item['id']?>" class="btn btn-xs btn-danger"><i class="fa fa-times"> Xóa</i></a>

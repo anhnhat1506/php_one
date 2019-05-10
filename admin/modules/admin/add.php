@@ -4,25 +4,17 @@
     /**
      * Danh sách danh mục sản phẩm
      */
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {  
-        $data = [
-            "name"=>'',
-            "email"=>'',
-            "phone"=>'',
-            "password"=>'',
-            "address"=>'',
-            "level"=>'',
-        ];  
-    }
+    $data = [
+        "name"=>postInput('name'),
+        "email"=>postInput('email'),
+        "phone"=>postInput('phone'),
+        "password"=>MD5(postInput('password')),
+        "address"=>postInput('address'),
+        "level"=>postInput('level'),
+    ];    
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {   
-        $data = [
-            "name"=>postInput('name'),
-            "email"=>postInput('email'),
-            "phone"=>postInput('phone'),
-            "password"=>MD5(postInput('password')),
-            "address"=>postInput('address'),
-            "level"=>postInput('level'),
-        ];              
+                  
         $error = [];
         if (postInput('name') == '') {
             $error['name'] = "Bạn vui lòng nhập họ tên đầy đủ";
@@ -39,8 +31,8 @@
         if (postInput('address') == '') {
             $error['address'] = "Bạn vui lòng nhập vào địa chỉ của bạn";
         }
-        if (($data['password'] != MD5(postInput('re_password'))) {
-            //$error['password'] = "Bạn vui lòng nhập vào mật khẩu đúng";
+        if ($data['password'] != MD5(postInput('re_password'))) {
+            $error['password'] = "Bạn nhập mật khẩu không khớp";
         }
         //erros trống có nghĩa là không có lỗi
         if (empty($error)) {
@@ -51,9 +43,9 @@
             }
             else {
                 $_SESSION['error'] = "Thêm admin mới thất bại";
-                
-            } 
-        }
+                redirectAdmin("admin");
+            }
+        } 
     }
 ?>
 <?php require_once __DIR__."/../../layouts/header.php" ?>
@@ -84,12 +76,9 @@
     <div class="col-md-12">
     <form method="post" action="">
         <div class="form-group row">
-        <?php 
-            var_dump($data['name']);
-        ?>
             <label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Họ và tên</strong></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputEmail3" placeholder="Nhập họ tên đầy đủ" name="name" value="<?php $data['name'] ?>">
+                <input type="text" class="form-control" id="inputEmail3" placeholder="Nhập họ tên đầy đủ" name="name" value="<?=$data['name'] ?>">
                 <?php if (isset($error['name'])): ?>
                     <p class="text-danger"><?php echo $error['name'] ?> </p>
                 <?php endif ?>               
